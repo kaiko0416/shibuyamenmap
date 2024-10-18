@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>ラーメンマップ</title>
+
+    <script>
+        function initMap() {
+            const center ={ lat: 35.658034, lng: 139.701636};
+            const map =new google.maps.Map(document.getElementById("map"),{
+                zoom: 13,
+                center: center,
+            });
+
+            const ramenShops = {{ ramen_shops|safe }};
+
+            ramenShops.forEach(shop => {
+                const marker = new google.maps.Marker({
+                    position:{ lat: shop.latitude, lng: shop.longitude },
+                    map: map,
+                    title: shop.name
+                });
+
+                const infowindow = new google.maps.InfoWindow({
+                    content: `<h3>${shops.name}</h3><p>${shops.address}</p>`,
+                });
+            });
+
+
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'ramen_map' %}">ホーム</a></li>
+                <li><a href="{% url 'search_shops' %}">検索</a></li>
+                <li><a href="{% url 'add_review' 1 %}">レビューを投稿する</a></li> <
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'account_logout' %}">ログアウト</a></li>
+                {% else %}
+                    <li><a href="{% url 'account_login' %}">ログイン</a></li>
+                {% endif %}
+                <li><a href="{% url 'password_reset' %}">パスワードリセット</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <h1>渋谷のラーメンマップ</h1>
+    <div id="map" style="height: 500px; width: 100%;"></div>
+</body>
+</html>
